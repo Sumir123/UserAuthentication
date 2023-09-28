@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
     <style>
         body {
             background-color: #f0f0f0;
@@ -60,14 +60,16 @@
 
 <body>
     <h1>Login</h1>
-    <form method="post" action="./login">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" placeholder="Enter your email">
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password">
+    <form method="post" action="/login">
+        <%- include('message.ejs') -%>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" placeholder="Enter your email">
 
-        <input type="submit" value="Login">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password">
+
+            <input type="submit" value="Login">
     </form>
     <div class="mt-center">
         <span>Create a account? </span>

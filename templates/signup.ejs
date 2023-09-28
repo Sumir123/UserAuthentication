@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup</title>
     <style>
         body {
             background-color: #f0f0f0;
@@ -30,22 +30,24 @@
         }
 
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        input[type="email"] {
             width: 90%;
             padding: 10px;
-            margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 3px;
         }
 
         input[type="password"] {
-
             margin-bottom: 5px;
+        }
 
+        .mb-3 {
+            margin-bottom: 20px;
         }
 
         input[type="submit"] {
-            background-color: #007BFF;
+            background-color: #007bff;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -73,16 +75,29 @@
 
 <body>
     <h1>Signup</h1>
-    <form method="post" action="./signup">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" placeholder="Enter your email">
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password">
-        <div class="text-small">
-            <span>Should contain 1 Upper case, 1 Lower case 1, Number</span>
+    <form method="post" action="/signup">
+        <div class="mb-3">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name"
+                value="<%= typeof name != 'undefined'?name:''  %>" />
         </div>
-        <input type="submit" value="Sign Up">
+        <div class="mb-3">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email"
+                value="<%= typeof email != 'undefined'?email:''  %>" />
+        </div>
+        <div class="mb-3">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password"
+                value="<%= typeof password != 'undefined'?password:''  %>" />
+        </div>
+        <div class="mb-3">
+            <label for="password2">Confirm Password:</label>
+            <input type="password" id="password2" name="password2" placeholder="Confirm your password"
+                value="<%= typeof password2 != 'undefined'?password2:''  %>" />
+        </div>
+        <%- include('message.ejs') -%>
+            <input type="submit" value="Sign Up" />
     </form>
     <div class="mt-center">
         <span>Already loged in? </span>

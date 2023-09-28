@@ -1,0 +1,29 @@
+<% if (typeof errors !="undefined" ) { %>
+    <%errors.forEach(error=> { %>
+        <div style="padding: 4px; margin: 2px 0px; color: red; font-size: small">
+            <%= error.msg %>
+        </div>
+        <% }); %>
+            <% } %>
+
+
+                <% if ( success_msg !='' &&typeof success_msg !="undefined" ) { %>
+                    <div style="padding: 4px; margin: 2px 0px; color: green; font-size: small">
+                        <%= success_msg %>
+                    </div>
+
+                    <% } %>
+
+                        <% if (error_msg !='' && typeof error_msg !="undefined" ) { %>
+                            <div style="padding: 4px; margin: 2px 0px; color: red; font-size: small">
+                                <%= error_msg %>
+                            </div>
+
+                            <% } %>
+
+                                <% if (error !='' && typeof error !="undefined" ) { %>
+                                    <div style="padding: 4px; margin: 2px 0px; color: red; font-size: medium">
+                                        <%= error %>
+                                    </div>
+
+                                    <% } %>

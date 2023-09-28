@@ -1,84 +1,60 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
-const port = 4000;
-const User = require("./usersSchema");
+const path = require("path");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+// DB config
+const db = require("./config/keys").MongoURI;
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/" + "login.html");
+require("./config/passport")(passport);
+
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => {
+    console.log("mongodb connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+// EJS
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "./templates"));
+
+// Middlewares
+app.use(express.urlencoded({ extended: false })); // body-parser
+app.use(
+  session({
+    secret: "qazwsxedcrfvtgbyhnujmikolp",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(flash());
+
+// Global Variables
+
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
+  next();
 });
 
-app.get("/signup", (req, res) => {
-  res.sendFile(__dirname + "/" + "signup.html");
-});
+// Routes
+const indexRoutes = require("./routes/index");
+const userRoutes = require("./routes/user");
+const productRoutes = require("./routes/product");
 
-app.post("/signup", async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+app.use("", indexRoutes);
+app.use("", userRoutes);
+app.use("", productRoutes);
 
-  const isValid = Validator(email, password);
-
-  if (isValid) {
-    await User.insertMany({ email, password })
-      .then(() => {
-        res.sendFile(__dirname + "/" + "login.html");
-        // const response = {
-        //   message: "Signup Successfull",
-        // };
-        // res.status(200).send(response);
-      })
-      .catch(console.log("User insert failed"));
-  } else {
-    const response = {
-      error: "Invalid Email or password",
-    };
-    res.status(400).end(JSON.stringify(response));
-  }
-});
-
-app.get("/login", (req, res) => {
-  res.sendFile(__dirname + "/" + "login.html");
-});
-app.post("/login", async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-
-  const logedUser = await User.findOne({ email: email });
-
-  if (password === logedUser?.password) {
-    res.sendFile(__dirname + "/" + "index.html");
-    // const response = {
-    //   message: "Login Successfull",
-    // };
-    // res.status(200).send(response);
-  } else {
-    const response = {
-      error: "Invalid Credentials",
-    };
-    res.end(JSON.stringify(response));
-  }
-});
-
-app.listen(port, () => {
-  console.log(`App is listenting on port ${port}`);
-});
-
-function Validator(email, password) {
-  const emailRegx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const passwordRegx = /^(?=.*[A-Z])(?=.*\d).+/;
-
-  const isValidEmail = emailRegx.test(email);
-  const isValidPassword = passwordRegx.test(password);
-
-  if (email == "" || password == "") {
-    return false;
-  } else if (!isValidEmail) {
-    return false;
-  } else if (!isValidPassword) {
-    return false;
-  } else {
-    return true;
-  }
-}
+const port = process.env.PORT || 4000;
+app.listen(port, console.log(`App is listenting http://localhost:4000`));

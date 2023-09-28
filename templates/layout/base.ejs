@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <%=pageTitle %>
+    </title>
+    <style>
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        ul {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .mx-3 {
+            margin: 0px 3rem;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .success {
+            padding: 4px 12px;
+            background-color: green;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="mx-3">
+        <h1>
+            <%= pageTitle %>
+        </h1>
+        <ul>
+            <li><a href="/">Home</a></li>
+
+            <% if(user){ %>
+                <li>
+                    <p>
+                        <%= user %>
+                    </p>
+                </li>
+                <li><a href="/logout">Logout</a></li>
+
+                <% }else{ %>
+
+                    <li><a href="/signup">Signup</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <% } %>
+        </ul>
+    </nav>
+    <div class="mx-3"><%- include("../"+pageName) %></div>
+</body>
+
+</html>
