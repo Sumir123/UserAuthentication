@@ -7,7 +7,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 
 // DB config
-const db = require("./config/keys").MongoURI;
+const db = process.env.MONGODB_URI;
 
 require("./config/passport")(passport);
 
